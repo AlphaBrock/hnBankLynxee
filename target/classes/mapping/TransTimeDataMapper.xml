@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sino.hnbank.screen.mapper.TransTimeDataMapper" >
+  <resultMap id="BaseResultMap" type="com.sino.hnbank.screen.pojo.TransTimeData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="data_date" property="dataDate" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="branch_code" property="branchCode" jdbcType="VARCHAR" />
+    <result column="branch_name" property="branchName" jdbcType="VARCHAR" />
+    <result column="account_open_num" property="accountOpenNum" jdbcType="DECIMAL" />
+    <result column="trans_count_total" property="transCountTotal" jdbcType="DECIMAL" />
+    <result column="trans_out_amount" property="transOutAmount" jdbcType="DECIMAL" />
+    <result column="trans_in_amount" property="transInAmount" jdbcType="DECIMAL" />
+    <result column="public_out_amount" property="publicOutAmount" jdbcType="DECIMAL" />
+    <result column="public_in_amount" property="publicInAmount" jdbcType="DECIMAL" />
+    <result column="private_out_amount" property="privateOutAmount" jdbcType="DECIMAL" />
+    <result column="private_in_amount" property="privateInAmount" jdbcType="DECIMAL" />
+    <result column="other_bank_out_amount" property="otherBankOutAmount" jdbcType="DECIMAL" />
+    <result column="other_bank_in_amount" property="otherBankInAmount" jdbcType="DECIMAL" />
+    <result column="data_year" property="dataYear" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, data_date, last_update_time, branch_code, branch_name, account_open_num, trans_count_total, 
+    trans_out_amount, trans_in_amount, public_out_amount, public_in_amount, private_out_amount, 
+    private_in_amount, other_bank_out_amount, other_bank_in_amount, data_year
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from trans_time_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from trans_time_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sino.hnbank.screen.pojo.TransTimeData" >
+    insert into trans_time_data (id, data_date, last_update_time, 
+      branch_code, branch_name, account_open_num, 
+      trans_count_total, trans_out_amount, trans_in_amount, 
+      public_out_amount, public_in_amount, private_out_amount, 
+      private_in_amount, other_bank_out_amount, other_bank_in_amount, 
+      data_year)
+    values (#{id,jdbcType=INTEGER}, #{dataDate,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{branchCode,jdbcType=VARCHAR}, #{branchName,jdbcType=VARCHAR}, #{accountOpenNum,jdbcType=DECIMAL}, 
+      #{transCountTotal,jdbcType=DECIMAL}, #{transOutAmount,jdbcType=DECIMAL}, #{transInAmount,jdbcType=DECIMAL}, 
+      #{publicOutAmount,jdbcType=DECIMAL}, #{publicInAmount,jdbcType=DECIMAL}, #{privateOutAmount,jdbcType=DECIMAL}, 
+      #{privateInAmount,jdbcType=DECIMAL}, #{otherBankOutAmount,jdbcType=DECIMAL}, #{otherBankInAmount,jdbcType=DECIMAL}, 
+      #{dataYear,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sino.hnbank.screen.pojo.TransTimeData" >
+    insert into trans_time_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dataDate != null" >
+        data_date,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="branchCode != null" >
+        branch_code,
+      </if>
+      <if test="branchName != null" >
+        branch_name,
+      </if>
+      <if test="accountOpenNum != null" >
+        account_open_num,
+      </if>
+      <if test="transCountTotal != null" >
+        trans_count_total,
+      </if>
+      <if test="transOutAmount != null" >
+        trans_out_amount,
+      </if>
+      <if test="transInAmount != null" >
+        trans_in_amount,
+      </if>
+      <if test="publicOutAmount != null" >
+        public_out_amount,
+      </if>
+      <if test="publicInAmount != null" >
+        public_in_amount,
+      </if>
+      <if test="privateOutAmount != null" >
+        private_out_amount,
+      </if>
+      <if test="privateInAmount != null" >
+        private_in_amount,
+      </if>
+      <if test="otherBankOutAmount != null" >
+        other_bank_out_amount,
+      </if>
+      <if test="otherBankInAmount != null" >
+        other_bank_in_amount,
+      </if>
+      <if test="dataYear != null" >
+        data_year,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dataDate != null" >
+        #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="branchCode != null" >
+        #{branchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="branchName != null" >
+        #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountOpenNum != null" >
+        #{accountOpenNum,jdbcType=DECIMAL},
+      </if>
+      <if test="transCountTotal != null" >
+        #{transCountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="transOutAmount != null" >
+        #{transOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="transInAmount != null" >
+        #{transInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="publicOutAmount != null" >
+        #{publicOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="publicInAmount != null" >
+        #{publicInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="privateOutAmount != null" >
+        #{privateOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="privateInAmount != null" >
+        #{privateInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherBankOutAmount != null" >
+        #{otherBankOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherBankInAmount != null" >
+        #{otherBankInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dataYear != null" >
+        #{dataYear,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sino.hnbank.screen.pojo.TransTimeData" >
+    update trans_time_data
+    <set >
+      <if test="dataDate != null" >
+        data_date = #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="branchCode != null" >
+        branch_code = #{branchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="branchName != null" >
+        branch_name = #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountOpenNum != null" >
+        account_open_num = #{accountOpenNum,jdbcType=DECIMAL},
+      </if>
+      <if test="transCountTotal != null" >
+        trans_count_total = #{transCountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="transOutAmount != null" >
+        trans_out_amount = #{transOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="transInAmount != null" >
+        trans_in_amount = #{transInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="publicOutAmount != null" >
+        public_out_amount = #{publicOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="publicInAmount != null" >
+        public_in_amount = #{publicInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="privateOutAmount != null" >
+        private_out_amount = #{privateOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="privateInAmount != null" >
+        private_in_amount = #{privateInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherBankOutAmount != null" >
+        other_bank_out_amount = #{otherBankOutAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherBankInAmount != null" >
+        other_bank_in_amount = #{otherBankInAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dataYear != null" >
+        data_year = #{dataYear,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sino.hnbank.screen.pojo.TransTimeData" >
+    update trans_time_data
+    set data_date = #{dataDate,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      branch_code = #{branchCode,jdbcType=VARCHAR},
+      branch_name = #{branchName,jdbcType=VARCHAR},
+      account_open_num = #{accountOpenNum,jdbcType=DECIMAL},
+      trans_count_total = #{transCountTotal,jdbcType=DECIMAL},
+      trans_out_amount = #{transOutAmount,jdbcType=DECIMAL},
+      trans_in_amount = #{transInAmount,jdbcType=DECIMAL},
+      public_out_amount = #{publicOutAmount,jdbcType=DECIMAL},
+      public_in_amount = #{publicInAmount,jdbcType=DECIMAL},
+      private_out_amount = #{privateOutAmount,jdbcType=DECIMAL},
+      private_in_amount = #{privateInAmount,jdbcType=DECIMAL},
+      other_bank_out_amount = #{otherBankOutAmount,jdbcType=DECIMAL},
+      other_bank_in_amount = #{otherBankInAmount,jdbcType=DECIMAL},
+      data_year = #{dataYear,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

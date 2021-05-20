@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sino.hnbank.screen.mapper.TotalAssetsMapper" >
+  <resultMap id="BaseResultMap" type="com.sino.hnbank.screen.pojo.TotalAssets" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="total_asset" property="totalAsset" jdbcType="DECIMAL" />
+    <result column="total_liability" property="totalLiability" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, date, total_asset, total_liability
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from total_bank_assets
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from total_bank_assets
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sino.hnbank.screen.pojo.TotalAssets" >
+    insert into total_bank_assets (id, date, total_asset, 
+      total_liability)
+    values (#{id,jdbcType=INTEGER}, #{date,jdbcType=VARCHAR}, #{totalAsset,jdbcType=DECIMAL}, 
+      #{totalLiability,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sino.hnbank.screen.pojo.TotalAssets" >
+    insert into total_bank_assets
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="totalAsset != null" >
+        total_asset,
+      </if>
+      <if test="totalLiability != null" >
+        total_liability,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAsset != null" >
+        #{totalAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="totalLiability != null" >
+        #{totalLiability,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sino.hnbank.screen.pojo.TotalAssets" >
+    update total_bank_assets
+    <set >
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAsset != null" >
+        total_asset = #{totalAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="totalLiability != null" >
+        total_liability = #{totalLiability,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sino.hnbank.screen.pojo.TotalAssets" >
+    update total_bank_assets
+    set date = #{date,jdbcType=VARCHAR},
+      total_asset = #{totalAsset,jdbcType=DECIMAL},
+      total_liability = #{totalLiability,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--自定义的SQL语句-->
+  <!--获取最近N天的总资产和总负债-->
+  <select id="totalAssets" parameterType="long" resultType="map">
+    select date, sum(total_asset) as 'totalAsset',sum(total_liability) as 'totalLiability' from total_bank_assets group by date
+    order by unix_timestamp(date) desc limit 0,#{dayN,jdbcType=BIGINT}
+  </select>
+  <!--根据日期更新数据库数据-->
+  <update id="updateByDate" parameterType="com.sino.hnbank.screen.pojo.TotalAssets" >
+    update total_bank_assets
+    set date = #{date,jdbcType=VARCHAR},
+      total_asset = #{totalAsset,jdbcType=DECIMAL},
+      total_liability = #{totalLiability,jdbcType=DECIMAL}
+    where date = #{date,jdbcType=VARCHAR}
+  </update>
+  <!--根据日期查询数据 -->
+  <select id="selectByDate" resultMap="BaseResultMap" parameterType="string" >
+    select
+    <include refid="Base_Column_List" />
+    from total_bank_assets
+    where date = #{date,jdbcType=VARCHAR}
+  </select>
+</mapper>

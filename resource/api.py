@@ -25,6 +25,8 @@ def getAllBankMetric():
     allBank.pop("updateTime")
     allBank.pop("lastAmount")
     allBank.pop("lastCount")
+    allBank.pop("tempTotalTransAmount")
+    allBank.pop("tempTotalTransCount")
     log.logger.debug(json.dumps(allBank))
     return make_response(allBank, 200)
 

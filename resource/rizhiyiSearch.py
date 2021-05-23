@@ -36,7 +36,7 @@ class Rizhiyi(Config):
             "query": self.totalTransCountSpl,
             "time_range": "now/d,now",
             "operator": self.yottawebUserName,
-            "searchMode": "index",
+            "searchMode": "simple",
             "highlight": False,
             "statsevents": False,
             "fields": False,

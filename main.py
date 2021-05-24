@@ -9,6 +9,7 @@
 """
 import utils.config as globalVar
 import threading
+import os
 from resource.rizhiyiSearch import Rizhiyi
 from resource.updateVar import updateVar
 from resource.api import runDaemon as flaskApi
@@ -35,6 +36,8 @@ def scheduleRunner(scheduleType):
 
 
 def main():
+    if not os.path.exists("log"):
+        os.mkdir("log")
     # 启动spl定时查询
     scheduleTypes = ["spl查询", "凌晨更新变量"]
     for scheduleType in scheduleTypes:

@@ -9,6 +9,9 @@
 """
 import threading
 from contextlib import contextmanager
+from utils.logger import Logger
+
+log = Logger(loggeNname=__name__)
 
 # 用来存储local的数据
 _local = threading.local()
@@ -21,6 +24,7 @@ def acquire(*locks):
     # 如果已经持有锁当中的序号有比当前更大的，说明策略失败
     acquired = getattr(_local,'acquired', [])
     if acquired and max(id(lock) for lock in acquired) >= id(locks[0]):
+        log.logger.exception("Lock Order Violation")
         raise RuntimeError('Lock Order Violation')
     # 获取所有锁
     acquired.extend(locks)

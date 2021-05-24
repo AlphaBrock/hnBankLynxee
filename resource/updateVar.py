@@ -69,6 +69,17 @@ class updateVar(object):
             # mutex.release()
             log.logger.debug("globalMap:{}".format(json.dumps(globalVar._global_dict)))
 
+            # 凌晨重置玩变量后直接跳过
+            if tempCurrAmount > 0 and lastAmount == 0:
+                log.logger.warning("!!!!!! 发生了变量重置, 直接赋值进入睡眠 !!!!!!")
+                with acquire(mutex):
+                    globalVar.set_value("lastAmount", tempCurrAmount)
+                    globalVar.set_value("lastCount", tempCurrCount)
+                    globalVar.set_value("totalTransAmount", tempCurrAmount)
+                    globalVar.set_value("totalTransCount", tempCurrCount)
+                time.sleep(self.retryInterval)
+                continue
+
             # 当前值小于上一次值则不进行赋值
             if tempCurrAmount <= lastAmount or tempCurrCount <= lastCount:
                 log.logger.warning("!!!!!! 发生了当前总金额或交易笔数小于或等于上一次值的事件，我不赋新值 !!!!!!")
@@ -86,8 +97,8 @@ class updateVar(object):
             #     continue
 
             # 确定上限和下限中间随机数的个数
-            if diffNum >= 60:
-                size = 60
+            if diffNum >= 30:
+                size = 30
             elif diffNum > 0:
                 size = diffNum
             else:
@@ -136,6 +147,7 @@ class updateVar(object):
         每天凌晨重置下数据
         :return:
         """
+        log.logger.info("===========> 凌晨重置变量 <===========")
         with acquire(mutex):
             globalVar.set_value("lastAmount", 0)
             globalVar.set_value("lastCount", 0)

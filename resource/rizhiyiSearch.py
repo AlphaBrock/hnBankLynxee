@@ -18,7 +18,7 @@ import threading
 
 log = Logger(loggeNname=__name__)
 # 创建锁用于保护变量
-mutex = threading.RLock()
+mutex = threading.Lock()
 
 
 class Rizhiyi(Config):
@@ -69,7 +69,7 @@ class Rizhiyi(Config):
                     for row in text["results"]["sheets"]["rows"]:
                         # 加锁并更新全行交易金额以及交易量
                         # mutex.acquire()
-                        with acquire():
+                        with acquire(mutex):
                             globalVar.set_value("tempTotalTransAmount", int(row.get("totalTransAmount", 0)))
                             globalVar.set_value("tempTotalTransCount", int(row.get("totalTransCount", 0)))
                             globalVar.set_value("updateTime", int(round(time.time())))

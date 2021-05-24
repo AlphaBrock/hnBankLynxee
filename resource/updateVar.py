@@ -20,7 +20,7 @@ from utils.threadLock import acquire
 
 log = Logger(loggeNname=__name__)
 # 创建锁用于保护变量
-mutex = threading.RLock()
+mutex = threading.Lock()
 
 
 class updateVar(object):
@@ -71,14 +71,19 @@ class updateVar(object):
 
             # 当前值小于上一次值则不进行赋值
             if tempCurrAmount <= lastAmount or tempCurrCount <= lastCount:
-                log.logger.warning("!!!!!!@0发生了当前总金额或交易笔数小于或等于上一次值的事件，我不赋新值!!!!!!")
+                log.logger.warning("!!!!!! 发生了当前总金额或交易笔数小于或等于上一次值的事件，我不赋新值 !!!!!!")
                 time.sleep(self.retryInterval)
                 continue
 
             if tempCurrAmount == 0 or tempCurrCount == 0:
-                log.logger.warning("!!!!! totalTransAmount 或 totalTransCount 为空, 进入睡眠状态, 等待SPL接口返回数据!!!!!")
+                log.logger.warning("!!!!! totalTransAmount 或 totalTransCount 为空, 进入睡眠状态, 等待SPL接口返回数据 !!!!!")
                 time.sleep(self.retryInterval)
                 continue
+
+            # if currAmount == 0 or currCount == 0:
+            #     log.logger.warning("!!!!! 发生变量重置，进入休眠 !!!!!")
+            #     time.sleep(self.retryInterval)
+            #     continue
 
             # 确定上限和下限中间随机数的个数
             if diffNum >= 60:
@@ -108,9 +113,9 @@ class updateVar(object):
                 # 如果当前随机数等于上次随机数则map缓存数据为上次数据（业务数/总金额）
                 # 检查下当前情况变量情况，如果更新了直接退出循环
                 if int(globalVar.get_value("updateTime")) != lastUpdateTime:
-                    log.logger.warning("发生交易型数据更新, 退出循环")
+                    log.logger.warning("!!!!! 发生交易型数据更新, 退出循环 !!!!!")
                     # if mutex.acquire(False):
-                    with acquire():
+                    with acquire(mutex):
                         globalVar.set_value("lastAmount", tempCurrAmount)
                         globalVar.set_value("lastCount", tempCurrCount)
                         globalVar.set_value("totalTransAmount", tempCurrAmount)
@@ -118,10 +123,10 @@ class updateVar(object):
                     # mutex.release()
                     break
                 else:
-                    mutex.acquire()
-                    globalVar.set_value("totalTransAmount", amount[i])
-                    globalVar.set_value("totalTransCount", count[i])
-                    mutex.release()
+                    with acquire(mutex):
+                        globalVar.set_value("totalTransAmount", amount[i])
+                        globalVar.set_value("totalTransCount", count[i])
+                    # mutex.release()
 
                 # # 根据随机数个数动态调整休息时间
                 time.sleep(1)
@@ -131,9 +136,8 @@ class updateVar(object):
         每天凌晨重置下数据
         :return:
         """
-        mutex.acquire()
-        globalVar.set_value("lastAmount", 0)
-        globalVar.set_value("lastCount", 0)
-        globalVar.set_value('totalTransAmount', 0)
-        globalVar.set_value('totalTransCount', 0)
-        mutex.release()
+        with acquire(mutex):
+            globalVar.set_value("lastAmount", 0)
+            globalVar.set_value("lastCount", 0)
+            globalVar.set_value('totalTransAmount', 0)
+            globalVar.set_value('totalTransCount', 0)

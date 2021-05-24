@@ -19,7 +19,7 @@ def acquire(*locks):
     # 对锁按照id进行排序
     locks = sorted(locks, key=lambda x: id(x))
     # 如果已经持有锁当中的序号有比当前更大的，说明策略失败
-    acquired = getattr(_local,'acquired',[])
+    acquired = getattr(_local,'acquired', [])
     if acquired and max(id(lock) for lock in acquired) >= id(locks[0]):
         raise RuntimeError('Lock Order Violation')
     # 获取所有锁

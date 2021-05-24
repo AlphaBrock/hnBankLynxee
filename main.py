@@ -43,10 +43,12 @@ def main():
 
     # 启动变量更新
     thread2 = threading.Thread(target=updateVars.runner)
+    thread2.setDaemon(True)
     thread2.start()
 
     # 启动api
     thread3 = threading.Thread(target=flaskApi())
+    thread3.setDaemon(True)
     thread3.start()
 
 

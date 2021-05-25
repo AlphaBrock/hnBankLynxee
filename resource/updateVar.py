@@ -87,7 +87,6 @@ class updateVar(object):
             elif diffNum > 0:
                 size = diffNum
             else:
-                log.logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                 time.sleep(self.retryInterval)
                 continue
 

@@ -124,7 +124,7 @@ class updateVar(Config):
                     # mutex.release()
 
                 # 根据随机数个数动态调整休息时间
-                time.sleep(self.randomNumRange/int(self.splSearchInterval + 0.5))
+                time.sleep(int(self.splSearchInterval)/self.randomNumRange + 0.5)
 
     def setDefaultValue(self):
         """

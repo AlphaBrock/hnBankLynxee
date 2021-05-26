@@ -14,15 +14,22 @@ class Config(object):
 
     def __init__(self):
         conf = configparser.ConfigParser()
-        conf.read("config.ini")
+        conf.read("config.ini", encoding='UTF-8')
 
         self.yottawebIP = conf.get("rizhiyi", "yottawebIP")
         self.yottawebUserName = conf.get("rizhiyi", "yottawebUserName")
         self.yottawebPassWord = conf.get("rizhiyi", "yottawebPassWord")
 
-        self.totalTransCountSpl = conf.get("spl", "totalTrans")
+        self.totalTransCountSpl = conf.get("spl", "spl")
 
         self.logLevel = conf.get("logger", "logLevel")
+
+        self.randomNumRange = int(conf.get("updateVar", "randomNumRange"))
+        self.retryInterval = int(conf.get("updateVar", "retryInterval"))
+
+        self.splSearchInterval = int(conf.get("crontab", "splSearchInterval"))
+        self.setDefaultValueHour = conf.get("crontab", "setDefaultValueHour")
+        self.setDefaultValueMinute = conf.get("crontab", "setDefaultValueMinute")
 
 
 def _init():

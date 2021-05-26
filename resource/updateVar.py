@@ -8,13 +8,13 @@
    date        :    2021/5/20
 -------------------------------------------------
 """
-import copy
 import json
 import random
 import threading
 import time
 
 import utils.config as globalVar
+from utils.config import Config
 from utils.logger import Logger
 from utils.threadLock import acquire
 
@@ -23,10 +23,10 @@ log = Logger(loggeNname=__name__)
 mutex = threading.Lock()
 
 
-class updateVar(object):
+class updateVar(Config):
 
     def __init__(self):
-        self.retryInterval = 5
+        super().__init__()
 
     def randomNumber(self, t1, t2):
         """
@@ -57,7 +57,7 @@ class updateVar(object):
             log.logger.debug("=========>循环开始<=========")
             # globalVars = copy.copy(globalVar._global_dict)
             # mutex.acquire()
-            with acquire():
+            with acquire(mutex):
                 lastAmount = int(globalVar.get_value("lastAmount"))
                 lastCount = int(globalVar.get_value("lastCount"))
                 lastUpdateTime = int(globalVar.get_value("updateTime"))
@@ -82,8 +82,8 @@ class updateVar(object):
                 continue
 
             # 确定上限和下限中间随机数的个数
-            if diffNum >= 30:
-                size = 30
+            if diffNum >= self.randomNumRange:
+                size = self.randomNumRange
             elif diffNum > 0:
                 size = diffNum
             else:
@@ -123,8 +123,8 @@ class updateVar(object):
                         globalVar.set_value("totalTransCount", count[i])
                     # mutex.release()
 
-                # # 根据随机数个数动态调整休息时间
-                time.sleep(1)
+                # 根据随机数个数动态调整休息时间
+                time.sleep(self.randomNumRange/int(self.splSearchInterval + 0.5))
 
     def setDefaultValue(self):
         """

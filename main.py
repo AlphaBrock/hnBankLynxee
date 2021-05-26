@@ -14,9 +14,12 @@ from resource.updateVar import updateVar
 from resource.api import runDaemon as flaskApi
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
+from utils.config import Config
 
 rzy = Rizhiyi()
 updateVars = updateVar()
+conf = Config()
+
 executors = {
         'default': ThreadPoolExecutor(max_workers=2)
 }
@@ -29,9 +32,9 @@ def scheduleRunner(scheduleType):
     :return:
     """
     if scheduleType == "spl查询":
-        scheduler.add_job(func=rzy.search, trigger="interval", seconds=20)
+        scheduler.add_job(func=rzy.search, trigger="interval", seconds=conf.splSearchInterval)
     elif scheduleType == "凌晨更新变量":
-        scheduler.add_job(func=updateVars.setDefaultValue, trigger="cron", hour="0", minute='1')
+        scheduler.add_job(func=updateVars.setDefaultValue, trigger="cron", hour=conf.setDefaultValueHour, minute=conf.setDefaultValueMinute)
 
 
 def main():

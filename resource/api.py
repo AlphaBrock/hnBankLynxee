@@ -21,8 +21,8 @@ app = Flask(__name__)
 @app.route('/api/getAllBankMetric', methods=['GET'])
 def getAllBankMetric():
     # 取出全局变量: 全行交易金额与笔数
-    allBank = copy.copy(globalVar._global_dict)
-    if (allBank.get("tempTotalTransAmount") > 0 and allBank.get("TotalTransAmount") == 0) or (allBank.get("tempTotalTransCount") > 0 and allBank.get("TotalTransCount") == 0):
+    allBank = copy.deepcopy(globalVar._global_dict)
+    if (allBank.get("tempTotalTransAmount") > 0 and allBank.get("totalTransAmount") == 0) or (allBank.get("tempTotalTransCount") > 0 and allBank.get("totalTransCount") == 0):
         allBank["totalTransAmount"] = allBank["tempTotalTransAmount"]
         allBank["totalTransCount"] = allBank["tempTotalTransCount"]
 
